@@ -1,0 +1,11 @@
+html {
+    box-sizing: border-box;
+    font-size: 60%;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+.animate__animated.animate__fadeIn {
+    --animate-duration: 0.5s;
+}
