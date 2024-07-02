@@ -1,6 +1,7 @@
 import React from "react";
 import {MediaQueryContext} from "./index.js";
 import {useMediaQuery, useTheme} from "@mui/material";
+import PropTypes from "prop-types";
 
 export const MediaQueryProvider = ({children}) => {
     const theme = useTheme();
@@ -23,4 +24,8 @@ export const MediaQueryProvider = ({children}) => {
             {children}
         </MediaQueryContext.Provider>
     )
+}
+
+MediaQueryProvider.propTypes = {
+    children: PropTypes.node.isRequired
 }

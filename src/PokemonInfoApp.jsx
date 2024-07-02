@@ -1,12 +1,14 @@
 import {AppTheme} from "./theme/index.js";
 import {AppRouter} from "./router/AppRouter.jsx";
-import {MediaQueryProvider} from "./pokemon/context/MediaQueryProvider.jsx";
+import {MediaQueryProvider, PokemonsProvider} from "./pokemon/context/index.js";
 
 export const PokemonInfoApp = () => {
     return (
         <AppTheme>
             <MediaQueryProvider>
-                <AppRouter />
+                <PokemonsProvider>
+                    <AppRouter/>
+                </PokemonsProvider>
             </MediaQueryProvider>
         </AppTheme>
     )

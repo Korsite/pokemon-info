@@ -1,8 +1,14 @@
-import {Navbar} from "../components/Navbar.jsx";
+import {Navbar} from "../../ui/Navbar.jsx";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
+import {DrawerList} from "../../ui/DrawerList.jsx";
+import {useState} from "react";
 
 export const PokemonLayout = ({ children }) => {
+    const [openDrawer, setOpenDrawer] = useState(false)
+    const handleOpenDrawer = () => {
+        setOpenDrawer(!openDrawer)
+    }
     return (
         <Box
             sx={{
@@ -10,9 +16,10 @@ export const PokemonLayout = ({ children }) => {
                 flexDirection: 'column',
             }}
         >
-            <Navbar />
+            <Navbar setOpenDrawer={ handleOpenDrawer }/>
 
             <Toolbar />
+            <DrawerList openDrawer={openDrawer} setOpenDrawer={handleOpenDrawer}/>
 
             { children }
 
