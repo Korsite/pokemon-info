@@ -48,8 +48,6 @@ export const Navbar =
                 clearTimeout(timeoutId);
             }
 
-            const newAbortController = new AbortController();
-
             const id = setTimeout(() => {
                 handleAddWithFilter(value);
                 setTimeoutId(null); // Limpiar el timeoutId después de ejecutar handleAddWithFilter
@@ -63,7 +61,6 @@ export const Navbar =
             if (value) {
                 debounceSearch(value);
             } else {
-                removeAllPokemons();
                 addRandomPokemons(25);
                 console.log('No value');
             }

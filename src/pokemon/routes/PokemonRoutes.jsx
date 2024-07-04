@@ -6,12 +6,12 @@ export const PokemonRoutes = () => {
     return (
         <PokemonLayout>
             <Routes>
-                <Route path="/PokemonInfo" element={ <PokemonInfoPage /> } />
+                <Route path="/pokemon-info" element={ <PokemonInfoPage /> } />
                 <Route path="/ByType" element={ <h1>By type</h1> } />
                 <Route path="/ByRegion" element={ <h1>By region</h1> } />
                 <Route path="/ByFavorites" element={ <h1>Favorites</h1> } />
 
-                <Route path="/*" element={ <Navigate to='/PokemonInfo' /> } />
+                <Route path="/*" element={ <Navigate to='/pokemon-info' /> } />
             </Routes>
         </PokemonLayout>
     )
