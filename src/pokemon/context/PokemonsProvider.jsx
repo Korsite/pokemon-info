@@ -7,6 +7,7 @@ export const PokemonsProvider = ({children}) => {
     const {
         pokemonList,
         formState,
+        isFetchingRef,
         onInputChange,
         addRandomPokemons,
         removeAllPokemons,
@@ -16,6 +17,7 @@ export const PokemonsProvider = ({children}) => {
         <PokemonsContext.Provider value={{
             pokemonList,
             ...formState,
+            isFetchingRef,
             formState,
             onInputChange,
             addRandomPokemons,

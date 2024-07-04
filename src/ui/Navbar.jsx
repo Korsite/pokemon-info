@@ -29,7 +29,6 @@ export const Navbar =
          setOpenDrawer
      }) => {
         const [anchorElUser, setAnchorElUser] = useState(null);
-        const [abortController, setAbortController] = useState(null);
         const navigate = useNavigate();
         const location = useLocation();
         const handleOpenUserMenu = (event) => {
@@ -44,37 +43,32 @@ export const Navbar =
 
         const [timeoutId, setTimeoutId] = useState(null);
 
-
         const debounceSearch = (value) => {
             if (timeoutId) {
                 clearTimeout(timeoutId);
             }
 
-            if (abortController) {
-                abortController.abort();
-            }
-
             const newAbortController = new AbortController();
-            setAbortController(newAbortController);
 
             const id = setTimeout(() => {
-                handleAddWithFilter(value, newAbortController);
+                handleAddWithFilter(value);
                 setTimeoutId(null); // Limpiar el timeoutId después de ejecutar handleAddWithFilter
             }, 500);
             setTimeoutId(id); // Actualizar el timeoutId con el nuevo id
         };
 
         const handleSearchChange = (e) => {
-            removeAllPokemons();
             onInputChange(e);
             const value = e.target.value;
             if (value) {
                 debounceSearch(value);
             } else {
-                addRandomPokemons(100)
+                removeAllPokemons();
+                addRandomPokemons(25);
                 console.log('No value');
             }
         };
+
 
 
         return (

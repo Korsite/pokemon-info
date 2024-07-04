@@ -1,5 +1,5 @@
 import React, {memo, useState} from 'react'
-import {Card, CardContent, CardHeader, useTheme} from "@mui/material";
+import {Card, CardContent, CardHeader, ListItem, useTheme} from "@mui/material";
 import {TypesOfPokemon} from "../../pokemon/components/index.js";
 import IconButton from "@mui/material/IconButton";
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
@@ -13,27 +13,30 @@ export const PokemonInfoOnHoverOrPinned = memo(
      }) => {
 
         return (
-            <Card
-                raised={false}
-                className='animate__animated animate__fadeIn'
-                key={pokemon.id}
-                sx={{}}
-            >
-                <CardHeader
+                <Card
+                    raised={false}
+                    className='animate__animated animate__fadeIn'
+                    key={pokemon.id}
                     sx={{
-                        padding: '0.5rem',
-                        paddingRight: '1rem',
+                        width: '100%',
+                        height: '100%'
                     }}
-                    action={<PinIcon pokemon={pokemon} setPinnedPokemons={setPinnedPokemons}/>}
-                    subheader={pokemon.name}
-                    subheaderTypographyProps={{
-                        textAlign: 'center'
-                    }}
-                />
-                <CardContent>
-                    <TypesOfPokemon typeOfPokemon={pokemon.types}/>
-                </CardContent>
-            </Card>
+                >
+                    <CardHeader
+                        sx={{
+                            padding: '0.5rem',
+                            paddingRight: '1rem',
+                        }}
+                        action={<PinIcon pokemon={pokemon} setPinnedPokemons={setPinnedPokemons}/>}
+                        subheader={pokemon.name}
+                        subheaderTypographyProps={{
+                            textAlign: 'center'
+                        }}
+                    />
+                    <CardContent>
+                        <TypesOfPokemon typeOfPokemon={pokemon.types}/>
+                    </CardContent>
+                </Card>
         )
     }
 )
@@ -47,7 +50,7 @@ const PinIcon = memo(
     ({
          pokemon,
          setPinnedPokemons
-    }) => {
+     }) => {
         const [pinned, setPinned] = useState(false)
         return (
             <IconButton aria-label="settings" size='medium' onClick={() => {

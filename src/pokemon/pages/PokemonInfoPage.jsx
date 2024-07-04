@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 
 // este componente se renderiza como 100 veces al iniciar la app y dejar sobre el mouse un pokemon
 export const PokemonInfoPage = () => {
-    const {pokemonList, addRandomPokemons, inputSearchPokemon} = useContext(PokemonsContext);
+    const {pokemonList, addRandomPokemons, inputSearchPokemon, isFetchingRef} = useContext(PokemonsContext);
     const [hoveredPokemon, setHoveredPokemon] = useState(null);
     const {isLg, isMd, isSm} = useContext(MediaQueryContext);
     const [pinnedPokemons, setPinnedPokemons] = useState([]);

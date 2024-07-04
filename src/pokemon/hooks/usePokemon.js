@@ -15,10 +15,11 @@ export const usePokemon = () => {
         inputSearchPokemon: ''
     });
     const isFetchingRef = useRef(false);
+    const abortControllerRef = useRef(new AbortController());
 
-    const fetchAPokemon = async (url) => {
+    const fetchAPokemon = async (url, signal) => {
         try {
-            const response = await fetch(url);
+            const response = await fetch(url, { signal });
             return await response.json();
         } catch (error) {
             console.error('Error fetching Pokémon: ', error);
@@ -49,18 +50,36 @@ export const usePokemon = () => {
         dispatch({type: 'loaded', payload: newPokemon.id});
     }
 
-    const handleAddWithFilter = async (filter, abortController) => {
+
+    const handleAddWithFilter = async (filter) => {
         removeAllPokemons();
+
+        // Cancelar las solicitudes anteriores si existen
+        if (abortControllerRef.current !== null) {
+            abortControllerRef.current.abort();
+            console.log('Abort previous requests');
+        }
+
+        // Crear un nuevo AbortController para la nueva serie de solicitudes
+        const abortController = new AbortController();
+        abortControllerRef.current = abortController;
+
         const listOfPokemons = await listOfPokemonsId();
         const regex = new RegExp("^" + filter, "i");
+        const signal = abortController.signal;
 
+        console.log(abortControllerRef)
         for (const pokemonId of listOfPokemons) {
+
             try {
-                const fetchPokemon = await fetchAPokemon(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`, { signal: abortController.signal });
-                if (fetchPokemon.name.match(regex)) {
-                    console.log(fetchPokemon.name, " match with ", filter, " ", fetchPokemon.name.match(regex));
-                    addAPokemon(fetchPokemon);
-                }
+                await fetchAPokemon(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`, signal)
+                    .then((response) => {
+                        if(response && response.name.match(regex)) {
+                            addAPokemon(response);
+                        }
+                    })
+                    .catch((error) => console.error('Pokemon fetching canceled: ', error))
+                ;
             } catch (error) {
                 if (error.name === 'AbortError') {
                     console.log('Fetch aborted');
@@ -70,6 +89,7 @@ export const usePokemon = () => {
             }
         }
     };
+
 
     const removeAllPokemons = () => {
         dispatch({type: 'removeAll'});
@@ -85,6 +105,7 @@ export const usePokemon = () => {
     return {
         pokemonList,
         formState,
+        isFetchingRef,
         onInputChange,
         addRandomPokemons,
         removeAllPokemons,
