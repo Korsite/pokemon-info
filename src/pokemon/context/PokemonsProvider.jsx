@@ -9,6 +9,7 @@ export const PokemonsProvider = ({children}) => {
         formState,
         isFetchingRef,
         onInputChange,
+        onResetForm,
         addRandomPokemons,
         removeAllPokemons,
         handleAddWithFilter
@@ -20,6 +21,7 @@ export const PokemonsProvider = ({children}) => {
             isFetchingRef,
             formState,
             onInputChange,
+            onResetForm,
             addRandomPokemons,
             removeAllPokemons,
             handleAddWithFilter

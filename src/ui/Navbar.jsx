@@ -10,15 +10,14 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import TuneIcon from '@mui/icons-material/Tune';
-import {useLocation, useNavigate} from "react-router-dom";
+import SettingsIcon from '@mui/icons-material/Settings';import {useLocation, useNavigate} from "react-router-dom";
 import {alpha, InputBase, Link, List, ListItem, ListItemButton, ListItemText, styled} from "@mui/material";
 import {Link as RouterLink} from "react-router-dom";
 import BorderAllIcon from "@mui/icons-material/BorderAll.js";
 import SouthAmericaOutlinedIcon from "@mui/icons-material/SouthAmericaOutlined.js";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined.js";
+import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
-import {usePokemon} from "../pokemon/hooks/index.js";
 import {PokemonsContext} from "../pokemon/context/index.js";
 
 const pages = ['By type', 'By region', 'Favorites'];
@@ -39,7 +38,13 @@ export const Navbar =
             setAnchorElUser(null);
         };
 
-        const {onInputChange, handleAddWithFilter, addRandomPokemons, removeAllPokemons} = useContext(PokemonsContext)
+        const {
+            onInputChange,
+            handleAddWithFilter,
+            addRandomPokemons,
+            removeAllPokemons,
+            inputSearchPokemon
+        } = useContext(PokemonsContext)
 
         const [timeoutId, setTimeoutId] = useState(null);
 
@@ -61,11 +66,11 @@ export const Navbar =
             if (value) {
                 debounceSearch(value);
             } else {
-                addRandomPokemons(25);
+                removeAllPokemons();
+                addRandomPokemons(100);
                 console.log('No value');
             }
         };
-
 
 
         return (
@@ -78,11 +83,11 @@ export const Navbar =
                             onClick={setOpenDrawer}
                             color="inherit"
                         >
-                            <TuneIcon fontSize='large'/>
+                            <SettingsIcon fontSize='large'/>
                         </IconButton>
 
 
-                        <Link color='inherit' to='/PokemonInfo' component={RouterLink} underline='none'>
+                        <Link color='inherit' to='/pokemon-info' component={RouterLink} underline='none'>
                             <Typography
                                 variant="h4"
                                 noWrap
@@ -122,20 +127,27 @@ export const Navbar =
                         </List>
 
                         <Box sx={{flexGrow: 1}}/>
-
-                        <Search
-                            sx={{
-                                maxWidth: '400px',
-                            }}
-                            onInput={handleSearchChange}>
-                            <SearchIconWrapper>
-                                <SearchIcon/>
+                        <Search sx={{maxWidth: '400px'}}>
+                            <SearchIconWrapper >
+                                <SearchIcon />
                             </SearchIconWrapper>
                             <StyledInputBase
+                                value={inputSearchPokemon}
+                                onChange={handleSearchChange}
                                 name="inputSearchPokemon"
                                 placeholder="Search a pokemon!"
                                 inputProps={{'aria-label': 'search'}}
                             />
+                            {inputSearchPokemon && (
+                                <ClearIconWrapper>
+                                    <IconButton
+                                        onClick={() => handleSearchChange({target: {value: '', name: 'inputSearchPokemon'}})}
+                                        size="small"
+                                    >
+                                        <ClearIcon/>
+                                    </IconButton>
+                                </ClearIconWrapper>
+                            )}
                         </Search>
 
                         <Box sx={{flexGrow: 0}}>
@@ -229,4 +241,14 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
             width: '20ch',
         },
     },
+}));
+
+const ClearIconWrapper = styled('div')(({theme}) => ({
+    position: 'absolute',
+    right: 5,
+    top: '50%',
+    transform: 'translateY(-50%)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
 }));

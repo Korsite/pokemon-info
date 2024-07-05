@@ -1,4 +1,4 @@
-import {useEffect, useReducer, useRef} from "react";
+import {useEffect, useReducer, useRef, useState} from "react";
 import {pokemonReducer} from "../useReducer/index.js";
 import {capitalizeAWord, checkIfImageIsAvailable, listOfPokemonsId, returnARandomPokemonId} from "../helpers/index.js";
 import {useForm} from "./useForm.js";
@@ -6,7 +6,7 @@ import {useForm} from "./useForm.js";
 const initialState = []
 
 export const usePokemon = () => {
-    const [pokemonList, dispatch] = useReducer(pokemonReducer, initialState);
+    const [pokemonList, dispatch] = useReducer(pokemonReducer, initialState, () => []);
     const {
         formState,
         onInputChange,
@@ -14,7 +14,7 @@ export const usePokemon = () => {
     } = useForm({
         inputSearchPokemon: ''
     });
-    const isFetchingRef = useRef(false);
+    const [isFetchingRef, setIsFetchingRef] = useState(false)
     const abortControllerRef = useRef(new AbortController());
 
     const fetchAPokemon = async (url, signal) => {
@@ -22,17 +22,21 @@ export const usePokemon = () => {
             const response = await fetch(url, {signal});
             return await response.json();
         } catch (error) {
-            console.error('Error fetching Pokémon: ', error);
+            // do not log error if fetch was aborted
+            if (!signal.aborted) {
+                console.error('Error fetching Pokémon: ', error);
+            }
         }
     }
 
     const addRandomPokemons = async (numberOfPokemonsToFetch) => {
         cancelPreviewRequests();
-        removeAllPokemons();
 
         const signal = abortControllerRef.current.signal;
 
         for (let i = 0; i < numberOfPokemonsToFetch; i++) {
+            setIsFetchingRef(true)
+
             const randomPokemonId = await returnARandomPokemonId();
             const urlInput = `https://pokeapi.co/api/v2/pokemon/${randomPokemonId}`;
             await fetchAPokemon(urlInput, signal)
@@ -44,6 +48,7 @@ export const usePokemon = () => {
                 .catch((error) => console.error('Pokemon fetching canceled: ', error))
             ;
         }
+        setIsFetchingRef(false)
     };
 
     const addAPokemon = async (newPokemon) => {
@@ -54,11 +59,9 @@ export const usePokemon = () => {
                 name: capitalizeAWord(newPokemon.name),
                 image: checkIfImageIsAvailable(newPokemon.sprites.front_default),
                 types: newPokemon.types.map((type) => type.type.name),
-                isLoading: true
+                isLoading: false
             },
         });
-        await new Promise(resolve => setTimeout(resolve, 100));
-        dispatch({type: 'loaded', payload: newPokemon.id});
     }
 
 
@@ -70,7 +73,9 @@ export const usePokemon = () => {
         const regex = new RegExp("^" + filter, "i");
         const signal = abortControllerRef.current.signal;
 
+
         for (const pokemonId of listOfPokemons) {
+            setIsFetchingRef(true)
 
             try {
                 await fetchAPokemon(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`, signal)
@@ -88,6 +93,7 @@ export const usePokemon = () => {
                 }
             }
         }
+        setIsFetchingRef(false)
     };
 
     const removeAllPokemons = () => {
@@ -103,17 +109,19 @@ export const usePokemon = () => {
     }
 
     useEffect(() => {
-        if (!isFetchingRef.current) {
-            isFetchingRef.current = true;
-            addRandomPokemons(25);
+        if (!isFetchingRef) {
+            setIsFetchingRef(true)
+            addRandomPokemons(100);
         }
     }, []);
+
 
     return {
         pokemonList,
         formState,
         isFetchingRef,
         onInputChange,
+        onResetForm,
         addRandomPokemons,
         removeAllPokemons,
         handleAddWithFilter,

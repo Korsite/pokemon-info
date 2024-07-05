@@ -2,7 +2,7 @@ import React from 'react'
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import {PokemonInfoPage} from "../../../src/pokemon/pages/PokemonInfoPage.jsx";
 import {usePokemon} from "../../../src/pokemon/hooks/index.js";
-import {MediaQueryProvider} from "../../../src/pokemon/context/MediaQueryProvider.jsx";
+import {MediaQueryProvider} from "../../../src/pokemon/context/index.js";
 jest.mock('../../../src/pokemon/hooks/usePokemon.js')
 
 describe('Tests in <PokemonPage />', () => {

@@ -1,6 +1,6 @@
 import React, {memo, useState} from 'react'
 import {Card, CardContent, CardHeader, ListItem, useTheme} from "@mui/material";
-import {TypesOfPokemon} from "../../pokemon/components/index.js";
+import {TypesOfPokemon} from "../../components/index.js";
 import IconButton from "@mui/material/IconButton";
 import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
 import PushPinIcon from '@mui/icons-material/PushPin';

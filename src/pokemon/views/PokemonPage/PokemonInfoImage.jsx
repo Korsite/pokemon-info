@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {ImageListItem, ImageListItemBar, IconButton} from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import Typography from "@mui/material/Typography";
-import {ImageNotFound} from "../../pokemon/assets/index.js";
+import {ImageNotFound} from "../../assets/index.js";
 
 export const PokemonInfoImage = memo(
     ({
@@ -49,7 +49,7 @@ export const PokemonInfoImage = memo(
 
                 />
                 <ImageListItemBar
-                    subtitle={<Typography sx={{fontSize: '0.9rem'}}> {index + 1} {pokemon.name} </Typography>}
+                    title={<Typography> {index + 1}. {pokemon.name} </Typography>}
                     actionIcon={
                         <IconButton sx={{color: 'rgba(255, 255, 255, 0.54)'}}>
                             <InfoIcon/>

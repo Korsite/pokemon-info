@@ -1,15 +1,6 @@
 import {createTheme} from "@mui/material";
 
-export const PokemonTheme = createTheme({
-    breakpoints: {
-        values: {
-            xs: 0,
-            sm: 600,
-            md: 900,
-            lg: 1200,
-            xl: 1536,
-        },
-    },
+export const PokemonTheme = {
     palette: {
         primary: {
             main: '#f44336',
@@ -41,7 +32,9 @@ export const PokemonTheme = createTheme({
             normalType: '#a8a878'
         }
     },
-    typography: {
-        fontFamily: '"Press Start 2P", Arial, sans-serif',
-    }
-})
+};
+
+export const fonts =  {
+    default: '"Press Start 2P", Arial, sans-serif',
+    alternate: '"Comic Sans MS", cursive, sans-serif',
+};
