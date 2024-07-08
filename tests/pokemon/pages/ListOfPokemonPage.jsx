@@ -1,11 +1,11 @@
 import React from 'react'
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
-import {PokemonInfoPage} from "../../../src/pokemon/pages/PokemonInfoPage.jsx";
+import {ListOfPokemonPage} from "../../../src/pokemon/pages/ListOfPokemonPage.jsx";
 import {usePokemon} from "../../../src/pokemon/hooks/index.js";
 import {MediaQueryProvider} from "../../../src/pokemon/context/index.js";
 jest.mock('../../../src/pokemon/hooks/usePokemon.js')
 
-describe('Tests in <PokemonPage />', () => {
+describe('Tests in <ListOfPokemonPage />', () => {
     test('Should call function to add 10 pokemons', async () => {
         const handleAdd = jest.fn()
         const mockPokemonList = [{
@@ -21,7 +21,7 @@ describe('Tests in <PokemonPage />', () => {
 
         render(
             <MediaQueryProvider>
-                <PokemonInfoPage />
+                <ListOfPokemonPage />
             </MediaQueryProvider>
         )
 

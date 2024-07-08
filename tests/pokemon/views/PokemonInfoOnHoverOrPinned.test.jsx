@@ -1,6 +1,6 @@
 import React from 'react'
 import {fireEvent, render} from "@testing-library/react";
-import {PokemonInfoOnHoverOrPinned} from "../../../src/pokemon/views/PokemonPage/index.js";
+import {PokemonInfoOnHoverOrPinned} from "../../../src/pokemon/views/ListOfPokemonPage/index.js";
 import {AppTheme} from "../../../src/theme/index.js";
 
 describe('Tests in <PokemonInfoOnHoverOrPinned', () => {

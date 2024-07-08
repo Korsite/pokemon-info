@@ -57,8 +57,10 @@ export const usePokemon = () => {
             payload: {
                 id: newPokemon.id,
                 name: capitalizeAWord(newPokemon.name),
-                image: checkIfImageIsAvailable(newPokemon.sprites.front_default),
+                image: checkIfImageIsAvailable(newPokemon.sprites.other['official-artwork'].front_default),
                 types: newPokemon.types.map((type) => type.type.name),
+                moves: newPokemon.moves,
+                stats: newPokemon.stats,
                 isLoading: false
             },
         });

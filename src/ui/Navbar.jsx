@@ -10,8 +10,19 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import SettingsIcon from '@mui/icons-material/Settings';import {useLocation, useNavigate} from "react-router-dom";
-import {alpha, InputBase, Link, List, ListItem, ListItemButton, ListItemText, styled} from "@mui/material";
+import SettingsIcon from '@mui/icons-material/Settings';
+import {useLocation, useNavigate} from "react-router-dom";
+import {
+    alpha,
+    InputBase,
+    Link,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText, Slide,
+    styled,
+    useScrollTrigger
+} from "@mui/material";
 import {Link as RouterLink} from "react-router-dom";
 import BorderAllIcon from "@mui/icons-material/BorderAll.js";
 import SouthAmericaOutlinedIcon from "@mui/icons-material/SouthAmericaOutlined.js";
@@ -19,6 +30,33 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined.js";
 import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
 import {PokemonsContext} from "../pokemon/context/index.js";
+import PropTypes from "prop-types";
+
+function HideOnScroll(props) {
+    const { children, window } = props;
+    // Note that you normally won't need to set the window ref as useScrollTrigger
+    // will default to window.
+    // This is only being set here because the demo is in an iframe.
+    const trigger = useScrollTrigger({
+        target: window ? window() : undefined,
+    });
+
+    return (
+        <Slide appear={false} direction="down" in={!trigger}>
+            {children}
+        </Slide>
+    );
+}
+
+HideOnScroll.propTypes = {
+    children: PropTypes.element.isRequired,
+    /**
+     * Injected by the documentation to work in an iframe.
+     * You won't need it on your project.
+     */
+    window: PropTypes.func,
+};
+
 
 const pages = ['By type', 'By region', 'Favorites'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -56,7 +94,7 @@ export const Navbar =
             const id = setTimeout(() => {
                 handleAddWithFilter(value);
                 setTimeoutId(null); // Limpiar el timeoutId después de ejecutar handleAddWithFilter
-            }, 500);
+            }, 1000);
             setTimeoutId(id); // Actualizar el timeoutId con el nuevo id
         };
 
@@ -74,114 +112,116 @@ export const Navbar =
 
 
         return (
-            <AppBar position="fixed" enableColorOnDark>
-                <Container maxWidth="xl">
-                    <Toolbar disableGutters>
+            <HideOnScroll>
+                <AppBar position="fixed" enableColorOnDark>
+                    <Container maxWidth="xl" >
+                        <Toolbar disableGutters >
 
-                        <IconButton
-                            size="large"
-                            onClick={setOpenDrawer}
-                            color="inherit"
-                        >
-                            <SettingsIcon fontSize='large'/>
-                        </IconButton>
-
-
-                        <Link color='inherit' to='/pokemon-info' component={RouterLink} underline='none'>
-                            <Typography
-                                variant="h4"
-                                noWrap
-                                sx={{
-                                    mr: 2,
-                                    display: {xs: 'none', md: 'flex'},
-                                    fontFamily: 'monospace',
-                                    fontWeight: 700,
-                                    letterSpacing: '.2rem',
-                                    color: 'inherit',
-                                    textDecoration: 'none',
-                                }}
+                            <IconButton
+                                size="large"
+                                onClick={setOpenDrawer}
+                                color="inherit"
                             >
-                                PokeInfo
-                            </Typography>
-                        </Link>
+                                <SettingsIcon fontSize='large'/>
+                            </IconButton>
 
-                        <List sx={{display: {xs: 'none', md: 'flex'}}}>
-                            {
-                                options.map(option => (
-                                    <ListItem key={option.name} disablePadding>
-                                        <ListItemButton
-                                            selected={location.pathname === option.path}
-                                            onClick={() => {
-                                                navigate(option.path)
-                                            }}
-                                            sx={{
-                                                whiteSpace: 'nowrap',
-                                                textOverflow: 'ellipsis'
-                                            }}
+
+                            <Link color='inherit' to='/pokemon-info' component={RouterLink} underline='none'>
+                                <Typography
+                                    variant="h4"
+                                    noWrap
+                                    sx={{
+                                        mr: 2,
+                                        display: {xs: 'none', md: 'flex'},
+                                        fontFamily: 'monospace',
+                                        fontWeight: 700,
+                                        letterSpacing: '.2rem',
+                                        color: 'inherit',
+                                        textDecoration: 'none',
+                                    }}
+                                >
+                                    PokeInfo
+                                </Typography>
+                            </Link>
+
+                            <List sx={{display: {xs: 'none', md: 'flex'}}}>
+                                {
+                                    options.map(option => (
+                                        <ListItem key={option.name} disablePadding>
+                                            <ListItemButton
+                                                selected={location.pathname === option.path}
+                                                onClick={() => {
+                                                    navigate(option.path)
+                                                }}
+                                                sx={{
+                                                    whiteSpace: 'nowrap',
+                                                    textOverflow: 'ellipsis'
+                                                }}
+                                            >
+                                                <ListItemText primary={option.name}/>
+                                            </ListItemButton>
+                                        </ListItem>
+                                    ))
+                                }
+                            </List>
+
+                            <Box sx={{flexGrow: 1}}/>
+                            <Search sx={{maxWidth: '400px'}}>
+                                <SearchIconWrapper >
+                                    <SearchIcon />
+                                </SearchIconWrapper>
+                                <StyledInputBase
+                                    value={inputSearchPokemon}
+                                    onChange={handleSearchChange}
+                                    name="inputSearchPokemon"
+                                    placeholder="Search a pokemon!"
+                                    inputProps={{'aria-label': 'search'}}
+                                />
+                                {inputSearchPokemon && (
+                                    <ClearIconWrapper>
+                                        <IconButton
+                                            onClick={() => handleSearchChange({target: {value: '', name: 'inputSearchPokemon'}})}
+                                            size="small"
                                         >
-                                            <ListItemText primary={option.name}/>
-                                        </ListItemButton>
-                                    </ListItem>
-                                ))
-                            }
-                        </List>
+                                            <ClearIcon/>
+                                        </IconButton>
+                                    </ClearIconWrapper>
+                                )}
+                            </Search>
 
-                        <Box sx={{flexGrow: 1}}/>
-                        <Search sx={{maxWidth: '400px'}}>
-                            <SearchIconWrapper >
-                                <SearchIcon />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                value={inputSearchPokemon}
-                                onChange={handleSearchChange}
-                                name="inputSearchPokemon"
-                                placeholder="Search a pokemon!"
-                                inputProps={{'aria-label': 'search'}}
-                            />
-                            {inputSearchPokemon && (
-                                <ClearIconWrapper>
-                                    <IconButton
-                                        onClick={() => handleSearchChange({target: {value: '', name: 'inputSearchPokemon'}})}
-                                        size="small"
-                                    >
-                                        <ClearIcon/>
+                            <Box sx={{flexGrow: 0}}>
+                                <Tooltip title="Open settings">
+                                    <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                                        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
                                     </IconButton>
-                                </ClearIconWrapper>
-                            )}
-                        </Search>
-
-                        <Box sx={{flexGrow: 0}}>
-                            <Tooltip title="Open settings">
-                                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
-                                </IconButton>
-                            </Tooltip>
-                            <Menu
-                                sx={{mt: '45px'}}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
-                            >
-                                {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                        <Typography textAlign="center">{setting}</Typography>
-                                    </MenuItem>
-                                ))}
-                            </Menu>
-                        </Box>
-                    </Toolbar>
-                </Container>
-            </AppBar>
+                                </Tooltip>
+                                <Menu
+                                    sx={{mt: '45px'}}
+                                    id="menu-appbar"
+                                    anchorEl={anchorElUser}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={Boolean(anchorElUser)}
+                                    onClose={handleCloseUserMenu}
+                                >
+                                    {settings.map((setting) => (
+                                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                            <Typography textAlign="center">{setting}</Typography>
+                                        </MenuItem>
+                                    ))}
+                                </Menu>
+                            </Box>
+                        </Toolbar>
+                    </Container>
+                </AppBar>
+            </HideOnScroll>
         );
     }
 

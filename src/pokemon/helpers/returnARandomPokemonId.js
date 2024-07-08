@@ -36,7 +36,7 @@ export const returnARandomPokemonId = async () => {
     const totalPokemons = await listOfPokemonsId();
 
     if(pokemonsIdsUsed.length === totalPokemons.length){
-        return 0 // if all pokemons are used
+        pokemonsIdsUsed.length = 0; // if all pokemons are used, reset the array
     }
 
     let randomPokemonId;

@@ -9,7 +9,7 @@ export const TypesOfPokemon = memo(
      }) => {
         const theme = useTheme();
         return (
-            <Grid container gap={1}>
+            <Grid container gap={1} justifyContent="center" alignItems="center">
                 {
                     data.results.map((type, index) => {
                         return (
