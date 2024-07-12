@@ -32,7 +32,7 @@ export const TopButtons = () => {
                             variant='outlined' color='primary'
                             onClick={() => {
                                 removeAllPokemons()
-                                addRandomPokemons(100)
+                                addRandomPokemons()
                             }}
                             disabled={isFetchingRef}
                             fullWidth

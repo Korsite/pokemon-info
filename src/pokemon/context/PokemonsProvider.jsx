@@ -1,9 +1,9 @@
 import React from 'react'
-import {usePokemon} from "../hooks/index.js";
+import {usePokemon, usePokemonClicked} from "../hooks/index.js";
 import {PokemonsContext} from "./index.js";
 import PropTypes from "prop-types";
 
-export const PokemonsProvider = ({children}) => {
+export const PokemonHooksProvider = ({children}) => {
     const {
         pokemonList,
         formState,
@@ -12,8 +12,10 @@ export const PokemonsProvider = ({children}) => {
         onResetForm,
         addRandomPokemons,
         removeAllPokemons,
-        handleAddWithFilter
+        handleAddWithFilter,
+        pokemonCLickedRef
     } = usePokemon()
+
     return (
         <PokemonsContext.Provider value={{
             pokemonList,
@@ -24,13 +26,14 @@ export const PokemonsProvider = ({children}) => {
             onResetForm,
             addRandomPokemons,
             removeAllPokemons,
-            handleAddWithFilter
+            handleAddWithFilter,
+
         }}>
             {children}
         </PokemonsContext.Provider>
     )
 }
 
-PokemonsProvider.propTypes = {
+PokemonHooksProvider.propTypes = {
     children: PropTypes.node.isRequired
 }

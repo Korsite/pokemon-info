@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react'
+import React, {memo, useState, useContext} from 'react'
 import {Card, CardActionArea, CardContent, CardHeader, Grid, ListItem, useTheme} from "@mui/material";
 import {StatsOfPokemon, TypesOfPokemon} from "../../components/index.js";
 import IconButton from "@mui/material/IconButton";
@@ -7,12 +7,15 @@ import PushPinIcon from '@mui/icons-material/PushPin';
 import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
 import {useNavigate} from "react-router-dom";
+import {PokemonsContext} from "../../context/index.js";
 
 export const PokemonInfoOnHoverOrPinned = memo(
     ({pokemon, setPinnedPokemons}) => {
         const navigate = useNavigate();
+        const { changeLastPokemonClicked } = useContext(PokemonsContext);
+
         const goToPokemonPage = () => {
-            navigate(`/pokemon-info/${pokemon.name}`);
+            navigate(`/pokemon-info/${pokemon.name}`, { state: { pokemon } });
         };
         return (
             <Card
@@ -30,17 +33,16 @@ export const PokemonInfoOnHoverOrPinned = memo(
                         justifyContent: 'flex-start', // Alinea el contenido al inicio
                         overflow: 'visible',
                     }}
-                    onClick={goToPokemonPage}
+                    onClick={ goToPokemonPage }
                 >
                     <CardHeader
                         sx={{
                             padding: '0.5rem',
                             paddingRight: '1rem',
                         }}
-                        action={<PinIcon pokemon={pokemon} setPinnedPokemons={setPinnedPokemons}/>}
-                        subheader={pokemon.name}
-                        subheaderTypographyProps={{
-                            fontSize: '0.9rem',
+                        title={pokemon.name}
+                        titleTypographyProps={{
+                            fontSize: '1.2rem',
                             textAlign: 'center',
                             fontWeight: 'bold'
                         }}
@@ -50,10 +52,14 @@ export const PokemonInfoOnHoverOrPinned = memo(
                             <Grid item xs={12}>
                                 <TypesOfPokemon typeOfPokemon={pokemon.types}/>
                             </Grid>
-                            <Grid item xs={12}>
-                                <Typography textAlign="center">Able to
-                                    learn {pokemon.moves.length} movements</Typography>
-                            </Grid>
+                            {
+                                pokemon.moves.length > 0 &&
+                                <Grid item xs={12}>
+                                    <Typography textAlign="center">
+                                        Able to learn {pokemon.moves.length} {pokemon.moves.length > 1 ? 'moves' : 'move'}
+                                    </Typography>
+                                </Grid>
+                            }
                             <Grid item xs={12}>
                                 <StatsOfPokemon stats={pokemon.stats}/>
                             </Grid>
