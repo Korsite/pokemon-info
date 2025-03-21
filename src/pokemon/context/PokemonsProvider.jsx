@@ -1,7 +1,7 @@
 import React from 'react'
-import {usePokemon, usePokemonClicked} from "../hooks/index.js";
 import {PokemonsContext} from "./index.js";
 import PropTypes from "prop-types";
+import {usePokemon} from "../hooks/index.js";
 
 export const PokemonHooksProvider = ({children}) => {
     const {
@@ -13,7 +13,6 @@ export const PokemonHooksProvider = ({children}) => {
         addRandomPokemons,
         removeAllPokemons,
         handleAddWithFilter,
-        pokemonCLickedRef
     } = usePokemon()
 
     return (

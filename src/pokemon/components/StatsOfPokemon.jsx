@@ -2,6 +2,8 @@ import {memo} from "react";
 import Typography from "@mui/material/Typography";
 import {Grid} from "@mui/material";
 
+import PropTypes from 'prop-types';
+
 export const StatsOfPokemon = memo(({ stats }) => {
     const limitedStats = stats.slice(0, 3); // limit to 3 stats
 
@@ -20,6 +22,14 @@ export const StatsOfPokemon = memo(({ stats }) => {
         </>
     )
 })
+
+StatsOfPokemon.propTypes = {
+    stats: PropTypes.arrayOf(PropTypes.shape({
+        base_stat: PropTypes.number.isRequired
+    })).isRequired,
+};
+
+StatsOfPokemon.displayName = "StatsOfPokemon";
 
 const StatsIcons = [
     {

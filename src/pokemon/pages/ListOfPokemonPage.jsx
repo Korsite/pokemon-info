@@ -1,15 +1,19 @@
-import React, {useState, useContext, Fragment, useMemo} from 'react';
-import {Grid, ImageList, ImageListItem, Skeleton} from '@mui/material';
-import {usePokemon} from "../hooks/index.js";
-import {PokemonInfoOnHoverOrPinned, PokemonInfoImage, TopButtons} from "../views/ListOfPokemonPage/index.js";
+import {useState, useContext, useMemo} from 'react';
+import {ImageList, Skeleton} from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
+import {
+    PokemonInfoOnHoverOrPinned,
+    PokemonInfoImage,
+    TopButtons,
+    AddPokemons
+} from "../views/ListOfPokemonPage/index.js";
 import {MediaQueryContext, PokemonsContext} from "../context/index.js";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import {PokemonsNotFound} from "../assets/index.js";
 
 // este componente se renderiza como 100 veces al iniciar la app y dejar sobre el mouse un pokemon
 export const ListOfPokemonPage = () => {
-    const {pokemonList, addRandomPokemons, inputSearchPokemon, isFetchingRef} = useContext(PokemonsContext);
+    const {pokemonList, inputSearchPokemon, isFetchingRef} = useContext(PokemonsContext);
     const [hoveredPokemon, setHoveredPokemon] = useState(null);
     const {isXl, isLg, isMd, isSm} = useContext(MediaQueryContext);
     const [pinnedPokemons, setPinnedPokemons] = useState([]);
@@ -34,11 +38,11 @@ export const ListOfPokemonPage = () => {
     return (
         <>
             <Grid container>
-                <Grid item xs={12} mt={3} mb={3} id='back-to-top-anchor'>
+                <Grid xs={12} mt={3} mb={3} id='back-to-top-anchor'>
                     <Typography variant='h3' align='center'>Pokemons list</Typography>
                 </Grid>
 
-                <Grid item container justifyContent='center'>
+                <Grid container justifyContent='center'>
                     {
                         pokemonList.length === 0
                             ? (
@@ -51,11 +55,11 @@ export const ListOfPokemonPage = () => {
                     }
                 </Grid>
 
-                <Grid item xs={12} mt={1} mb={1}>
+                <Grid xs={12} mt={1} mb={1}>
                     <TopButtons/>
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid xs={12}>
                     <ImageList cols={cols} sx={{overflow: 'hidden'}}>
                         {
                             pokemonList.map((pokemon, index) => (
@@ -82,13 +86,7 @@ export const ListOfPokemonPage = () => {
                 {
                     inputSearchPokemon === '' && (
                         <Grid container justifyContent="center">
-                            <Button
-                                aria-label='testButton'
-                                variant='contained'
-                                disabled={isFetchingRef}
-                                onClick={() => addRandomPokemons(10)}>
-                                Add 10 Pokémon
-                            </Button>
+                            <AddPokemons />
                         </Grid>
                     )
                 }

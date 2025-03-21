@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Tabs, Tab, Typography } from '@mui/material';
+import PropTypes from "prop-types";
 
 export const InfoTabs = ({ pokemon }) => {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -9,13 +10,13 @@ export const InfoTabs = ({ pokemon }) => {
     };
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box>
             <Tabs value={selectedTab} onChange={handleTabChange} aria-label="info tabs">
                 <Tab label="Info" />
                 <Tab label="Abilities" />
                 <Tab label="Example" />
             </Tabs>
-            <Box sx={{ padding: '1rem', backgroundColor: '#e0f7fa', marginTop: '1rem' }}>
+            <Box sx={{ padding: '1rem', marginTop: '1rem' }}>
                 {selectedTab === 0 && (
                     <Box>
                         <Typography variant="h6">Basic</Typography>
@@ -38,4 +39,12 @@ export const InfoTabs = ({ pokemon }) => {
             </Box>
         </Box>
     );
+};
+
+InfoTabs.propTypes = {
+    pokemon: PropTypes.shape({
+        type: PropTypes.string,
+        weight: PropTypes.number,
+        height: PropTypes.number,
+    }).isRequired,
 };

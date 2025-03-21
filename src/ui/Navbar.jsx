@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {useState, useContext} from "react";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -10,7 +9,6 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import SettingsIcon from '@mui/icons-material/Settings';
 import {useLocation, useNavigate} from "react-router-dom";
 import {
     alpha,
@@ -23,6 +21,7 @@ import {
     styled,
     useScrollTrigger
 } from "@mui/material";
+import ListIcon from '@mui/icons-material/List';
 import {Link as RouterLink} from "react-router-dom";
 import BorderAllIcon from "@mui/icons-material/BorderAll.js";
 import SouthAmericaOutlinedIcon from "@mui/icons-material/SouthAmericaOutlined.js";
@@ -33,7 +32,7 @@ import {PokemonsContext} from "../pokemon/context/index.js";
 import PropTypes from "prop-types";
 
 function HideOnScroll(props) {
-    const { children, window } = props;
+    const {children, window} = props;
     // Note that you normally won't need to set the window ref as useScrollTrigger
     // will default to window.
     // This is only being set here because the demo is in an iframe.
@@ -58,9 +57,8 @@ HideOnScroll.propTypes = {
 };
 
 
-const pages = ['By type', 'By region', 'Favorites'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
+const MyFacebookProfile = "https://scontent-mty2-1.xx.fbcdn.net/v/t39.30808-6/470197228_1740917903426925_1966197865853947375_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=JtQQN8wmyZsQ7kNvgHTYPf2&_nc_oc=AdgTlol-txP2QIwxaK_NLmcTNm8DCpT1RbXx0DslJ1R6h3jJU8BG1D8DgB53np3WXTjj2SjXcvs7_1eaB45B9w76&_nc_zt=23&_nc_ht=scontent-mty2-1.xx&_nc_gid=GV32fVWGgcM9AQIbk1gaYA&oh=00_AYHKcsUeiM_BtPKAtP_5qVrGQQI2zAs9YDT8OQsP_3aEyw&oe=67DE5BB4"
 export const Navbar =
     ({
          setOpenDrawer
@@ -114,15 +112,15 @@ export const Navbar =
         return (
             <HideOnScroll>
                 <AppBar position="fixed" enableColorOnDark>
-                    <Container maxWidth="xl" >
-                        <Toolbar disableGutters >
+                    <Container maxWidth="xl">
+                        <Toolbar disableGutters>
 
                             <IconButton
                                 size="large"
                                 onClick={setOpenDrawer}
                                 color="inherit"
                             >
-                                <SettingsIcon fontSize='large'/>
+                                <ListIcon fontSize='large'/>
                             </IconButton>
 
 
@@ -167,8 +165,8 @@ export const Navbar =
 
                             <Box sx={{flexGrow: 1}}/>
                             <Search sx={{maxWidth: '400px'}}>
-                                <SearchIconWrapper >
-                                    <SearchIcon />
+                                <SearchIconWrapper>
+                                    <SearchIcon/>
                                 </SearchIconWrapper>
                                 <StyledInputBase
                                     value={inputSearchPokemon}
@@ -180,7 +178,12 @@ export const Navbar =
                                 {inputSearchPokemon && (
                                     <ClearIconWrapper>
                                         <IconButton
-                                            onClick={() => handleSearchChange({target: {value: '', name: 'inputSearchPokemon'}})}
+                                            onClick={() => handleSearchChange({
+                                                target: {
+                                                    value: '',
+                                                    name: 'inputSearchPokemon'
+                                                }
+                                            })}
                                             size="small"
                                         >
                                             <ClearIcon/>
@@ -192,7 +195,7 @@ export const Navbar =
                             <Box sx={{flexGrow: 0}}>
                                 <Tooltip title="Open settings">
                                     <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
+                                        <Avatar alt="G" src={MyFacebookProfile}/>
                                     </IconButton>
                                 </Tooltip>
                                 <Menu
@@ -224,6 +227,10 @@ export const Navbar =
             </HideOnScroll>
         );
     }
+Navbar.propTypes = {
+    setOpenDrawer: PropTypes.func.isRequired,
+}
+
 
 const options = [
     {
@@ -283,7 +290,7 @@ const StyledInputBase = styled(InputBase)(({theme}) => ({
     },
 }));
 
-const ClearIconWrapper = styled('div')(({theme}) => ({
+const ClearIconWrapper = styled('div')(() => ({
     position: 'absolute',
     right: 5,
     top: '50%',

@@ -1,7 +1,8 @@
-import React, {memo} from 'react'
+import {memo} from 'react'
 import {Grid, useTheme} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {capitalizeAWord} from "../helpers/index.js";
+import PropTypes from "prop-types";
 
 export const TypesOfPokemon = memo(
     ({
@@ -18,12 +19,12 @@ export const TypesOfPokemon = memo(
                                   padding='0.5rem'
                                   key={index}
                                   sx={{
-                                      backgroundColor: theme.palette.customPalette[`${type.name}Type`],
+                                      backgroundColor: theme.customPalette[`${type.name}Type`],
                                       borderRadius: '0.5rem',
                                   }}
                             >
                                 <Typography textAlign='center'>
-                                    { capitalizeAWord(type.name) }
+                                    {capitalizeAWord(type.name)}
                                 </Typography>
                             </Grid>
                         )
@@ -32,7 +33,13 @@ export const TypesOfPokemon = memo(
             </Grid>
         )
     }
-)
+);
+
+TypesOfPokemon.displayName = 'TypesOfPokemon';
+
+TypesOfPokemon.propTypes = {
+    typeOfPokemon: PropTypes.arrayOf(PropTypes.string)
+}
 
 const data = {
     "count": 18,

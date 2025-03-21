@@ -1,18 +1,13 @@
-import React, {memo, useState, useContext} from 'react'
-import {Card, CardActionArea, CardContent, CardHeader, Grid, ListItem, useTheme} from "@mui/material";
+import {memo} from 'react'
+import {Card, CardActionArea, CardContent, CardHeader, Grid}from "@mui/material";
 import {StatsOfPokemon, TypesOfPokemon} from "../../components/index.js";
-import IconButton from "@mui/material/IconButton";
-import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined';
-import PushPinIcon from '@mui/icons-material/PushPin';
 import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
 import {useNavigate} from "react-router-dom";
-import {PokemonsContext} from "../../context/index.js";
 
 export const PokemonInfoOnHoverOrPinned = memo(
-    ({pokemon, setPinnedPokemons}) => {
+    ({pokemon}) => {
         const navigate = useNavigate();
-        const { changeLastPokemonClicked } = useContext(PokemonsContext);
 
         const goToPokemonPage = () => {
             navigate(`/pokemon-info/${pokemon.name}`, { state: { pokemon } });
@@ -70,33 +65,8 @@ export const PokemonInfoOnHoverOrPinned = memo(
         );
     }
 );
+PokemonInfoOnHoverOrPinned.displayName = 'PokemonInfoOnHoverOrPinned';
 PokemonInfoOnHoverOrPinned.propTypes = {
-    pokemon: PropTypes.object.isRequired,
-    setPinnedPokemons: PropTypes.func.isRequired
-}
-
-const PinIcon = memo(
-    ({
-         pokemon,
-         setPinnedPokemons
-     }) => {
-        const [pinned, setPinned] = useState(false)
-        return (
-            <IconButton aria-label="settings" size='medium' onClick={() => {
-                setPinned(!pinned)
-                if (pinned) {
-                    setPinnedPokemons((prev) => prev.filter((pinnedPokemon) => pinnedPokemon.id !== pokemon.id))
-                } else {
-                    setPinnedPokemons((prev) => [...prev, pokemon])
-                }
-            }}>
-                {pinned ? <PushPinIcon fontSize='medium'/> : <PushPinOutlinedIcon fontSize='medium'/>}
-            </IconButton>
-        )
-    }
-)
-
-PinIcon.propTypes = {
     pokemon: PropTypes.object.isRequired,
     setPinnedPokemons: PropTypes.func.isRequired
 }
