@@ -266,20 +266,7 @@ const NestedMenu = ({ listOfPokemonImages, handleOpenImages }) => {
 NestedMenu.propTypes = {
     listOfPokemonImages: PropTypes.object.isRequired,
     handleOpenImages: PropTypes.func.isRequired
-};
-NestedMenu.propTypes = {
-    listOfPokemonImages: PropTypes.object.isRequired,
-    handleOpenImages: PropTypes.func.isRequired
-};
-NestedMenu.propTypes = {
-    listOfPokemonImages: PropTypes.array.isRequired,
-    handleOpenImages: PropTypes.func.isRequired
-};
-NestedMenu.propTypes = {
-    listOfPokemonImages: PropTypes.array.isRequired,
-    handleOpenImages: PropTypes.func.isRequired
 }
-
 
 MenuItem.propTypes = {
     onClick: PropTypes.func,
