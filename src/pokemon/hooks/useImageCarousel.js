@@ -46,12 +46,14 @@ export const useImageCarousel = ({ imagesTest }) => {
     const { index, nextIndex, previousIndex, setIndex } = useGoToNextAndPrevious(lenghtOfImages - 1);
 
     // Manejo de cambio de imágenes actualizado
-    const handleOpenImages = ({ generationName, versionName }) => {
+    const handleOpenImages = ({ generationName, generationIndex, versionName, versionIndex}) => {
         const newImages = imagesTest?.[generationName]?.[versionName] || {};
 
         setImagesOfPokemon({
             generationName,
+            generationIndex,
             versionName,
+            versionIndex,
             images: newImages,
             flatImages: flattenImages(newImages)
         });

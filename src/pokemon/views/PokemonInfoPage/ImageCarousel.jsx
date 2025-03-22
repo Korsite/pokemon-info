@@ -78,8 +78,8 @@ export const ImageCarousel = ({pokemon}) => {
                 <NestedMenu
                     listOfPokemonImages={imagesTest}
                     handleOpenImages={handleOpenImages}
-                    selectedGeneration={imagesOfPokemon.generationName}
-                    selectedVersion={imagesOfPokemon.versionName}
+                    selectedGenerationIndex={imagesOfPokemon.generationIndex}
+                    selectedVersionIndex={imagesOfPokemon.versionIndex}
                 />
             </Box>
 
@@ -201,8 +201,8 @@ const NestedMenu =
     ({
          listOfPokemonImages,
          handleOpenImages,
-         selectedGeneration,
-         selectedVersion
+         selectedGenerationIndex,
+         selectedVersionIndex
      }) => {
         const [anchorEl, setAnchorEl] = useState(null);
         const [openSubmenu, setOpenSubmenu] = useState(null);
@@ -261,7 +261,7 @@ const NestedMenu =
 
                     {Object.keys(listOfPokemonImages).map((generationName, generationIndex) => (
                         <div key={generationName}>
-                            <MenuItem onClick={(e) => handleSubmenuClick(generationName, e)} selected={generationName === selectedGeneration}>
+                            <MenuItem onClick={(e) => handleSubmenuClick(generationName, e)} selected={generationIndex === selectedGenerationIndex}>
                                 <ListItemText primary={generationName}/>
                                 <ListItemIcon sx={{justifyContent: "flex-end"}}>
                                     {openSubmenu === generationName ? <ExpandLessIcon/> : <ExpandMore/>}
@@ -272,8 +272,7 @@ const NestedMenu =
                                 <List disablePadding>
                                     {Object.keys(listOfPokemonImages[generationName]).map((versionName, versionIndex) => (
                                         <MenuItem
-                                            selected={versionName === selectedVersion}
-                                            key={versionName}
+                                            selected={versionIndex === selectedVersionIndex && generationIndex === selectedGenerationIndex}                                            key={versionName}
                                             sx={{pl: 4}}
                                             onClick={() => {
                                                 handleClose();
@@ -300,8 +299,8 @@ const NestedMenu =
 NestedMenu.propTypes = {
     listOfPokemonImages: PropTypes.object.isRequired,
     handleOpenImages: PropTypes.func.isRequired,
-    selectedGeneration: PropTypes.string.isRequired,
-    selectedVersion: PropTypes.string.isRequired
+    selectedGenerationIndex: PropTypes.number.isRequired,
+    selectedVersionIndex: PropTypes.number.isRequired,
 }
 
 MenuItem.propTypes = {
