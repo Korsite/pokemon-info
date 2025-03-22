@@ -74,7 +74,7 @@ export const DrawerList = ({openDrawer, setOpenDrawer}) => {
         <Drawer open={openDrawer} onClose={setOpenDrawer}>
             <Box sx={{width: 250}} role="presentation">
                 {/* Renderiza lista principal de opciones */}
-                <List>{renderListItems(options, option => navigate(option.path))}</List>
+                <List onClick={setOpenDrawer} >{renderListItems(options, option => navigate(option.path))}</List>
                 <Divider/>
                 {/* Renderiza configuraciones dinámicas */}
                 <List>{renderListItems(settings, option => option.action())}</List>
