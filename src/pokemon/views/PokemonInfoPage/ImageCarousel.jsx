@@ -17,7 +17,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import {useImageCarousel} from "../../hooks/index.js";
 
 export const ImageCarousel = ({pokemon}) => {
-    const {name, types, imagesTest} = pokemon;
+    const {name, types, allImagesAvailable} = pokemon;
     const theme = useTheme();
 
     const {
@@ -28,7 +28,7 @@ export const ImageCarousel = ({pokemon}) => {
         previousIndex,
         handleOpenImages,
         lenghtOfImages
-    } = useImageCarousel({imagesTest});
+    } = useImageCarousel({allImagesAvailable: allImagesAvailable});
 
     const colorOfBackgroundBasedOnType = theme.customPalette[`${types?.[0]}Type`] || theme.palette.background.default;
 
@@ -76,7 +76,7 @@ export const ImageCarousel = ({pokemon}) => {
                     {name} ({imagesOfPokemon.flatImages[index]?.type || 'imagen'})
                 </Typography>
                 <NestedMenu
-                    listOfPokemonImages={imagesTest}
+                    listOfPokemonImages={allImagesAvailable}
                     handleOpenImages={handleOpenImages}
                     selectedGenerationIndex={imagesOfPokemon.generationIndex}
                     selectedVersionIndex={imagesOfPokemon.versionIndex}
@@ -139,7 +139,7 @@ ImageCarousel.propTypes = {
     pokemon: PropTypes.shape({
         name: PropTypes.string.isRequired,
         types: PropTypes.arrayOf(PropTypes.string).isRequired,
-        imagesTest: PropTypes.object
+        allImagesAvailable: PropTypes.object
     }).isRequired
 };
 /* an example of listoFpokemonImages
@@ -194,6 +194,10 @@ ImageCarousel.propTypes = {
  * Component to display a nested menu with options to show images of a Pokémon
  * @param listOfPokemonImages
  * @param handleOpenImages
+ * @param selectedGenerationIndex
+ * @param selectedVersionIndex
+ * @param selectedGenerationIndex
+ * @param selectedVersionIndex
  * @returns {JSX.Element}
  * @constructor
  */
@@ -229,20 +233,21 @@ const NestedMenu =
             setOpenSubmenu(null); // Resetea submenús individuales
         };
 
-        const theme = useTheme();
 
         return (
             <>
                 <IconButton
                     aria-label="more"
                     id="long-button"
+                    color="primary"
+                    size="large"
                     aria-controls={open ? "long-menu" : undefined}
                     aria-expanded={open ? "true" : undefined}
                     aria-haspopup="true"
                     onClick={handleClick}
                     sx={{position: 'absolute', right: 0}}
                 >
-                    <MoreVertIcon/>
+                    <MoreVertIcon fontSize="inherit" />
                 </IconButton>
 
                 <Menu

@@ -5,7 +5,6 @@ import {DrawerList} from "../../ui/DrawerList.jsx";
 import {useState} from "react";
 import {ScrollTop} from "../../helpers/index.js";
 import PropTypes from 'prop-types';
-import Grid from '@mui/material/Unstable_Grid2';
 import {CssBaseline} from "@mui/material";
 
 export const PokemonLayout = ({children}) => {

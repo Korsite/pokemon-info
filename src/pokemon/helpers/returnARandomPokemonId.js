@@ -15,6 +15,7 @@ export const listOfPokemonsId = async () => {
     return cachedPokemons;
 }
 
+
 /*
  * https://pokeapi.co/api/v2/pokemon?limit=100000
  * The id of pokemon matches with the array index until pokemon/1025 (which index in array is 1024)

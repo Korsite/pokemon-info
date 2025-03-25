@@ -13,20 +13,23 @@ export const fetchAPokemon = async (url, signal) => {
         const response = await fetch(url, {signal});
         const data = await response.json();
 
-        //
+        // Procesamiento rápido de imágenes
+        const processImages = (versions) => {
+            const result = {};
+            for (const [generation, data] of Object.entries(versions)) {
+                if (data) result[generation] = removeNullAttributes(data);
+            }
+            return result;
+        };
+
         let imagesTest = {...data.sprites.versions}
         imagesTest = removeNullAttributes(imagesTest)
+
         return {
             id: data.id,
             name: capitalizeAWord(data.name),
-            image: checkIfImageIsAvailable(data.sprites.other['official-artwork'].front_default),
-            images: [
-                checkIfImageIsAvailable(data.sprites.front_default),
-                checkIfImageIsAvailable(data.sprites.back_default),
-                checkIfImageIsAvailable(data.sprites.front_shiny),
-                checkIfImageIsAvailable(data.sprites.back_shiny)
-            ],
-            imagesTest,
+            previewImage: checkIfImageIsAvailable(data.sprites.other['official-artwork'].front_default),
+            allImagesAvailable: imagesTest,
             types: data.types.map((type) => type.type.name),
             moves: data.moves,
             stats: data.stats,

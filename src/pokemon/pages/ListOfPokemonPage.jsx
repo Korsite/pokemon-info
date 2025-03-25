@@ -1,6 +1,6 @@
 import {useState, useContext, useMemo} from 'react';
 import {ImageList, Skeleton} from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Grid2';
 import {
     PokemonInfoOnHoverOrPinned,
     PokemonInfoImage,
@@ -38,11 +38,11 @@ export const ListOfPokemonPage = () => {
     return (
         <>
             <Grid container>
-                <Grid xs={12} mt={3} mb={3} id='back-to-top-anchor'>
+                <Grid size={12}  id='back-to-top-anchor' sx={{ mt: 3, mb: 3}}>
                     <Typography variant='h3' align='center'>Pokemons list</Typography>
                 </Grid>
 
-                <Grid container justifyContent='center'>
+                <Grid justifyContent='center'>
                     {
                         pokemonList.length === 0
                             ? (
@@ -55,11 +55,11 @@ export const ListOfPokemonPage = () => {
                     }
                 </Grid>
 
-                <Grid xs={12} mt={1} mb={1}>
+                <Grid size={12} sx={{ mt: 1, mb: 1}}>
                     <TopButtons/>
                 </Grid>
 
-                <Grid xs={12}>
+                <Grid size={12}>
                     <ImageList cols={cols} sx={{overflow: 'hidden'}}>
                         {
                             pokemonList.map((pokemon, index) => (

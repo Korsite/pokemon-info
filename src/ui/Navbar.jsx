@@ -1,4 +1,4 @@
-import {useState, useContext} from "react";
+import {useState, useContext, useMemo} from "react";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,7 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import {useLocation, useNavigate} from "react-router-dom";
 import {
-    alpha,
+    alpha, debounce,
     InputBase,
     Link,
     List,
@@ -23,13 +23,16 @@ import {
 } from "@mui/material";
 import ListIcon from '@mui/icons-material/List';
 import {Link as RouterLink} from "react-router-dom";
-import BorderAllIcon from "@mui/icons-material/BorderAll.js";
-import SouthAmericaOutlinedIcon from "@mui/icons-material/SouthAmericaOutlined.js";
-import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined.js";
+// import BorderAllIcon from "@mui/icons-material/BorderAll.js";
+// import SouthAmericaOutlinedIcon from "@mui/icons-material/SouthAmericaOutlined.js";
+// import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined.js";
 import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
 import {PokemonsContext} from "../pokemon/context/index.js";
 import PropTypes from "prop-types";
+import BorderAllIcon from "@mui/icons-material/BorderAll";
+import SouthAmericaOutlinedIcon from "@mui/icons-material/SouthAmericaOutlined";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 
 function HideOnScroll(props) {
     const {children, window} = props;
@@ -84,17 +87,17 @@ export const Navbar =
 
         const [timeoutId, setTimeoutId] = useState(null);
 
-        const debounceSearch = (value) => {
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-            }
+        const debounceSearch = useMemo(() =>
+                debounce((value) => {
+                    if (value) {
+                        handleAddWithFilter(value);
+                    } else {
+                        removeAllPokemons();
+                        addRandomPokemons(100);
+                    }
+                }, 300),
+            [handleAddWithFilter, removeAllPokemons, addRandomPokemons]);
 
-            const id = setTimeout(() => {
-                handleAddWithFilter(value);
-                setTimeoutId(null); // Limpiar el timeoutId después de ejecutar handleAddWithFilter
-            }, 1000);
-            setTimeoutId(id); // Actualizar el timeoutId con el nuevo id
-        };
 
         const handleSearchChange = (e) => {
             onInputChange(e);

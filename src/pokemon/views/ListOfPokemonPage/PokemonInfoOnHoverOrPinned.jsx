@@ -1,5 +1,6 @@
 import {memo} from 'react'
-import {Card, CardActionArea, CardContent, CardHeader, Grid}from "@mui/material";
+import {Card, CardActionArea, CardContent, CardHeader}from "@mui/material";
+import Grid from '@mui/material/Grid2';
 import {StatsOfPokemon, TypesOfPokemon} from "../../components/index.js";
 import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
@@ -34,28 +35,24 @@ export const PokemonInfoOnHoverOrPinned = memo(
                         sx={{
                             padding: '0.5rem',
                             paddingRight: '1rem',
+                            textAlign: 'center'
                         }}
                         title={pokemon.name}
-                        titleTypographyProps={{
-                            fontSize: '1.2rem',
-                            textAlign: 'center',
-                            fontWeight: 'bold'
-                        }}
                     />
                     <CardContent sx={{padding: 0.5}}>
                         <Grid container spacing={1}>
-                            <Grid item xs={12}>
+                            <Grid size={12}>
                                 <TypesOfPokemon typeOfPokemon={pokemon.types}/>
                             </Grid>
                             {
                                 pokemon.moves.length > 0 &&
-                                <Grid item xs={12}>
+                                <Grid size={12}>
                                     <Typography textAlign="center">
                                         Able to learn {pokemon.moves.length} {pokemon.moves.length > 1 ? 'moves' : 'move'}
                                     </Typography>
                                 </Grid>
                             }
-                            <Grid item xs={12}>
+                            <Grid size={12}>
                                 <StatsOfPokemon stats={pokemon.stats}/>
                             </Grid>
                         </Grid>

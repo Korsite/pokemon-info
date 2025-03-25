@@ -24,20 +24,20 @@ const flattenImages = (imagesObj) => {
     return images;
 };
 
-export const useImageCarousel = ({ imagesTest }) => {
+export const useImageCarousel = ({ allImagesAvailable }) => {
     // Validación inicial de datos
-    const hasValidImages = imagesTest && safeObjectKeys(imagesTest).length > 0;
+    const hasValidImages = allImagesAvailable && safeObjectKeys(allImagesAvailable).length > 0;
 
     // Obtener claves iniciales
-    const firstGeneration = safeObjectKeys(imagesTest)[0] || '';
-    const firstVersion = safeObjectKeys(imagesTest?.[firstGeneration])[0] || '';
+    const firstGeneration = safeObjectKeys(allImagesAvailable)[0] || '';
+    const firstVersion = safeObjectKeys(allImagesAvailable?.[firstGeneration])[0] || '';
 
     // Estado de las imágenes
     const [imagesOfPokemon, setImagesOfPokemon] = useState({
         generationName: firstGeneration,
         versionName: firstVersion,
-        images: imagesTest?.[firstGeneration]?.[firstVersion] || {},
-        flatImages: flattenImages(imagesTest?.[firstGeneration]?.[firstVersion] || {})
+        images: allImagesAvailable?.[firstGeneration]?.[firstVersion] || {},
+        flatImages: flattenImages(allImagesAvailable?.[firstGeneration]?.[firstVersion] || {})
     });
 
 
@@ -47,7 +47,7 @@ export const useImageCarousel = ({ imagesTest }) => {
 
     // Manejo de cambio de imágenes actualizado
     const handleOpenImages = ({ generationName, generationIndex, versionName, versionIndex}) => {
-        const newImages = imagesTest?.[generationName]?.[versionName] || {};
+        const newImages = allImagesAvailable?.[generationName]?.[versionName] || {};
 
         setImagesOfPokemon({
             generationName,
